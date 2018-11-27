@@ -1,0 +1,29 @@
+{
+  "name": "node-weather-app",
+  "version": "1.0.0",
+  "description": "simple nodejs weather app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikerah13/node-weather-app.git"
+  },
+  "keywords": [
+    "weather",
+    "node"
+  ],
+  "author": "Harold Goldman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mikerah13/node-weather-app/issues"
+  },
+  "homepage": "https://github.com/mikerah13/node-weather-app#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "request": "^2.88.0"
+  }
+}
