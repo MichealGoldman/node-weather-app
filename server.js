@@ -20,6 +20,7 @@ app.get('/', function (req, res) {
 app.post('/', function(req, res){
     
     let city = argv.c || 'new orleans';
+    // changed string concate
     let url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city +'&APPID='+ data["apiKey"];
     console.log(url);
 
