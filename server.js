@@ -19,32 +19,25 @@ app.get('/', function (req, res) {
 
 app.post('/', function(req, res){
     
-    console.log(argv.c);
-    let city = argv.c || 'new orleans';
+    let city = req.body.city || 'new orleans';
     let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${data["apiKey"]}`;
-    console.log(url);
 
     request (url, function(err, response, body){
         if(err){
-            //console.log('error: ', err);
             res.render('index', {weather: null, error: "Error, please try again"});
             console.log('Error: ', err);
         } else {
             let weather = JSON.parse(body);
-            console.log(JSON.parse(body));
             if(weather == undefined){
                 res.render('index', {weather: null, error: "Error, please try again"});
                 console.log('Error: weather is undefined');
             } else if (weather.cod == '401'){
                 res.render('index', {weather: null, error: "Error, please try again"});
                 console.log('Error: invalide API key');
-                console.log("weather is : " + weatherText);
             } else {
-                console.log(weather);
                 let temp = ((weather.main.temp - 273.15) * 9/5 + 32).toFixed(0);
                 let weatherText = `It is  ${temp} degrees in ${weather.name}`;
                 res.render('index', {weather: weatherText, error: null});
-                console.log('what you got is:  ', weatherText);
             }
         }
     });
