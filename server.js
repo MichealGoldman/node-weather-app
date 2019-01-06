@@ -19,9 +19,9 @@ app.get('/', function (req, res) {
 
 app.post('/', function(req, res){
     
+    console.log(argv.c);
     let city = argv.c || 'new orleans';
-    // changed string concate
-    let url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city +'&APPID='+ data["apiKey"];
+    let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${data["apiKey"]}`;
     console.log(url);
 
     request (url, function(err, response, body){
@@ -42,7 +42,7 @@ app.post('/', function(req, res){
             } else {
                 console.log(weather);
                 let temp = ((weather.main.temp - 273.15) * 9/5 + 32).toFixed(0);
-                let weatherText = 'It is ' + temp + ' degrees in ' + weather.name + "!";
+                let weatherText = `It is  ${temp} degrees in ${weather.name}`;
                 res.render('index', {weather: weatherText, error: null});
                 console.log('what you got is:  ', weatherText);
             }
