@@ -38,20 +38,22 @@ app.post('/', function(req, res){
             } else {
                 let direction = degToCard(weather.wind.deg);
                 let nameText = `${weather.name} current weather`;
+                let dateText = `${new Date()}`;
                 let coordText = `${weather.coord.lon}, ${weather.coord.lat}`;
                 let descText = `${weather.weather[0].description}`;
                 let tempText =  `Temperature: ${parseInt(weather.main.temp)} `;
                 let humidityText = `Humidity:  ${weather.main.humidity}% `;
                 let windspeedText = `Windspeed: ${parseInt(weather.wind.speed)} mph ${direction}`;
                 let pressureText = `Barometric Pressure: ${weather.main.pressure}`;
-                let cloudText = `Cloud cover: ${weather.clouds}%`;
-                let rain1Text = `Rain volumn last hour: ${weather.rain.rain1h}`;
-                let rain3Text = `Rain volumn last 3 hours: ${weather.rain.rain3h}`;
-                let snow1Text = `Snow volumn last 3 hours: ${weather.snow.snow1h}`;
-                let snow3Text = `Snow volumn last 3 hours: ${weather.snow.snow3h}`;
-                let riseText = `Sunrise: ${weather.sys.sunrise}`;
-                let setText = `Sunset: ${weather.sys.sunset}`;
+                let cloudText = `Cloud cover: ${weather.clouds.all}%`;
+                // let rain1Text = `Rain volumn last hour: ${weather.rain.rain1h}`;
+                // let rain3Text = `Rain volumn last 3 hours: ${weather.rain.rain3h}`;
+                // let snow1Text = `Snow volumn last 3 hours: ${weather.snow.snow1h}`;
+                // let snow3Text = `Snow volumn last 3 hours: ${weather.snow.snow3h}`;
+                let riseText = `Sunrise: ${convertDate(weather.sys.sunrise)}`;
+                let setText = `Sunset: ${convertDate(weather.sys.sunset)}`;
                 res.render('index', {weather: nameText,
+                                    date: dateText,
                                     coord: coordText, 
                                     desc: descText,           
                                     temp: tempText, 
@@ -59,11 +61,23 @@ app.post('/', function(req, res){
                                     wind: windspeedText, 
                                     pressure: pressureText,
                                     clouds: cloudText,
+                                    // rain: rain1Text,
+                                    // snow: snow1Text,
+                                    sunrise: riseText,
+                                    sunset: setText,
                                     error: null});
             }
         }
     });
 });
+
+
+var convertDate = function(time){
+    let date = new Date(time*1000);
+    let hours = date.getHours();
+    let minutes = 0 + date.getMinutes();
+    return `${hours}:${minutes}`
+}
 
 var degToCard = function(deg){
     if (deg>11.25 && deg<33.75){
