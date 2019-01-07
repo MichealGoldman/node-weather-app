@@ -11,13 +11,36 @@
     <!-- <header>Light Weather</header> -->
       <fieldset>
         <form action="/city" method="post">
-          <!-- <input name="city" type="text" class="ghost-input" placeholder="Enter a City" required> -->
-          <input type="submit" class="ghost-button" value="Get Current Weather By City" action="/city">
-          </form>
-          </br>
-          <form action="/zip" method="post">
-          <input type="submit" class="ghost-button" value="Get Current Weather By Zip Code" action="/zip">
-        </form>            
+          <input name="city" type="text" class="ghost-input" placeholder="Enter a City" required>
+          <input type="submit" class="ghost-button" value="Get Current Weather">
+        </form>
+        <% if(weather !== null){ %>
+          <p></p>
+          <p><%= weather %></p>
+          <p><%= date %></p>
+          <p><%= coord %></p>
+          <p><%= typeof rain != 'undefined' ? rain : '' %>
+          <%= typeof snow != 'undefined' ? snow : '' %></p>
+          <p><%= desc %></p>
+          <p><%= temp %></p>
+
+          <p><%= humidity %></p>
+          <p><%= wind %></p>
+          <p><%= pressure %></p>
+          <p><%= clouds %></p>
+          <p><%= sunrise %></p>
+          <p><%= sunset %></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <% } %>
+        <% if(error !== null){ %>
+          <p><%= error %></p>
+        <% } %>
+            
       </fieldset>
       <footer>
       weather data provided by <a href="http://openweathermap.org" target="blank">OpenWeatherMap</a>

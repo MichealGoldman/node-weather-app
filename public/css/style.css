@@ -3,6 +3,14 @@ body {
     margin: 0 auto;
     font-family: 'Open Sans', sans-serif;
   }
+header {
+    background-color: white;
+    width: 100%;
+    min-width: 350px;
+    padding: 15px 40px ;
+    bottom: 0;
+    position: fixed;
+}
   .container {
     width: 600px;
     margin: 0 auto;
@@ -69,3 +77,12 @@ body {
     padding: 5px 10px;
     margin: 3px 0px;
   }
+  footer {
+    background-color: white;
+    width: 100%;
+    font-size: small;
+    min-width: 350px;
+    padding: 15px 40px ;
+    bottom: 0;
+    position: fixed;
+}
