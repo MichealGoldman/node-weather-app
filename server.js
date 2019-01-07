@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
-const argv = require('yargs').argv;
 const fs = require('fs');
 
 let data = JSON.parse(fs.readFileSync('config.json'));
@@ -264,6 +263,6 @@ var degToCard = function(deg){
   }
 
 
-app.listen(3000, function() {
-    console.log('Weather App listening on 3000');
+app.listen(8081, function() {
+    console.log('Weather App listening on 8081');
 });
