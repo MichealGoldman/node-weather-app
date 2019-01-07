@@ -36,40 +36,136 @@ app.post('/', function(req, res){
                 res.render('index', {weather: null, error: "Error, please try again"});
                 console.log('Error: invalide API key');
             } else {
-                let direction = degToCard(weather.wind.deg);
-                let nameText = `${weather.name} current weather`;
-                let dateText = `${new Date()}`;
-                let coordText = `${weather.coord.lon}, ${weather.coord.lat}`;
-                let descText = `${weather.weather[0].description}`;
-                let tempText =  `Temperature: ${parseInt(weather.main.temp)} `;
-                let humidityText = `Humidity:  ${weather.main.humidity}% `;
-                let windspeedText = `Windspeed: ${parseInt(weather.wind.speed)} mph ${direction}`;
-                let pressureText = `Barometric Pressure: ${weather.main.pressure}`;
-                let cloudText = `Cloud cover: ${weather.clouds.all}%`;
-                // let rain1Text = `Rain volumn last hour: ${weather.rain.rain1h}`;
-                // let rain3Text = `Rain volumn last 3 hours: ${weather.rain.rain3h}`;
-                // let snow1Text = `Snow volumn last 3 hours: ${weather.snow.snow1h}`;
-                // let snow3Text = `Snow volumn last 3 hours: ${weather.snow.snow3h}`;
-                let riseText = `Sunrise: ${convertDate(weather.sys.sunrise)}`;
-                let setText = `Sunset: ${convertDate(weather.sys.sunset)}`;
-                res.render('index', {weather: nameText,
-                                    date: dateText,
-                                    coord: coordText, 
-                                    desc: descText,           
-                                    temp: tempText, 
-                                    humidity: humidityText,
-                                    wind: windspeedText, 
-                                    pressure: pressureText,
-                                    clouds: cloudText,
-                                    // rain: rain1Text,
-                                    // snow: snow1Text,
-                                    sunrise: riseText,
-                                    sunset: setText,
-                                    error: null});
+                
+                res.render('index', create_output(weather));
             }
         }
     });
 });
+
+
+var create_output = function(weather){
+
+
+
+    let isRain = false;
+    let isSnow = false;
+    let rainText = "";
+    let snowText = "";
+
+    let direction = degToCard(weather.wind.deg);
+    let nameText = `${weather.name} current weather`;
+    let dateText = `${new Date()}`;
+    let coordText = `${weather.coord.lon}, ${weather.coord.lat}`;
+
+    let descText = "";
+    weather.weather.forEach(element => {
+        descText += ` ${element.description}`;
+    });
+
+    let tempText =  `Temperature: ${parseInt(weather.main.temp)} `;
+    let humidityText = `Humidity:  ${weather.main.humidity}% `;
+    let windspeedText = `Windspeed: ${parseInt(weather.wind.speed)} mph ${direction}`;
+    let pressureText = `Barometric Pressure: ${weather.main.pressure}`;
+    let cloudText = `Cloud cover: ${weather.clouds.all}%`;
+
+    if (typeof weather.rain != "undefined"){
+        console.log("rain is present")
+        console.log(weather.rain)
+        if(typeof weather.rain['1h'] != "undefined"){
+            console.log("1h rain");
+            console.log(`Rain volumn last hour: ${weather.rain['1h']}`);
+            rainText = `Rain volumn last hour: ${weather.rain['1h']}`;
+            isRain = true;
+        }
+
+        if(typeof weather.rain['3h'] != "undefined"){
+            console.log("3h rain");
+            rainText = `Rain volumn last 3 hours: ${weather.rain['3h']}`;
+            isRain = true;
+        }
+    }
+    if (typeof weather.snow != "undefined"){
+        console.log("snow is present")
+        if(typeof weather.snow['1h'] != "undefined"){
+            snowText = `Snow volumn last 3 hours: ${weather.snow.snow1h}`;
+            isSnow = true;
+        }
+
+        if(typeof weather.snow['3h'] != "undefined"){
+            snowText = `Snow volumn last 3 hours: ${weather.snow.snow3h}`;
+            isSnow = true;
+        }
+    }
+    let riseText = `Sunrise: ${convertDate(weather.sys.sunrise)}`;
+    let setText = `Sunset: ${convertDate(weather.sys.sunset)}`;
+
+    if(isRain == true && isSnow == true){
+        console.log("return rain and snow");
+        return({weather: nameText,
+            date: dateText,
+            coord: coordText, 
+            desc: descText,           
+            temp: tempText, 
+            humidity: humidityText,
+            wind: windspeedText, 
+            pressure: pressureText,
+            clouds: cloudText,
+            rain: rainText,
+            snow: snowText,
+            sunrise: riseText,
+            sunset: setText,
+            error: null})
+    } else if(isRain == true){
+        console.log("return rain");
+        return({weather: nameText,
+            date: dateText,
+            coord: coordText, 
+            desc: descText,           
+            temp: tempText, 
+            humidity: humidityText,
+            wind: windspeedText, 
+            pressure: pressureText,
+            clouds: cloudText,
+            rain: rainText,
+            // snow: snowText,
+            sunrise: riseText,
+            sunset: setText,
+            error: null})
+    } else if(isSnow == true){
+        console.log("return snow");
+        return({weather: nameText,
+            date: dateText,
+            coord: coordText, 
+            desc: descText,           
+            temp: tempText, 
+            humidity: humidityText,
+            wind: windspeedText, 
+            pressure: pressureText,
+            clouds: cloudText,
+            //rain: rainText,
+            snow: snowText,
+            sunrise: riseText,
+            sunset: setText,
+            error: null})
+    } else {
+        console.log("no rain/snow")
+        return({weather: nameText,
+            date: dateText,
+            coord: coordText, 
+            desc: descText,           
+            temp: tempText, 
+            humidity: humidityText,
+            wind: windspeedText, 
+            pressure: pressureText,
+            clouds: cloudText,
+            //rain: rainText,
+            //snow: snowText,
+            sunrise: riseText,
+            sunset: setText,
+            error: null})
+    }
+}
 
 
 var convertDate = function(time){
