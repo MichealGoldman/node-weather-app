@@ -1,2 +1,6 @@
 # node-weather-app
-Simple weather app built around nodejs
+Simple weather app built with nodejs.
+
+Uses the openweathermap.org API.
+
+Hosted on Heroku at http://url-heroku.com.
