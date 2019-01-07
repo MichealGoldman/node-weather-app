@@ -24,6 +24,16 @@ app.get('/zip', function (req, res) {
     res.render('zip', {weather: null, error: null});
   })
 
+app.get('/city_forecast', function (req, res) {
+    res.render('city', {weather: null, error: null});
+  })
+
+app.get('/zip_forecast', function (req, res) {
+    res.render('zip', {weather: null, error: null});
+  })
+
+
+
 
 app.post('/city', function(req, res){
     
@@ -81,6 +91,68 @@ app.post('/zip', function(req, res){
         }
     });
 });
+
+
+app.post('/city_forecast', function(req, res){
+    
+    let city = req.body.city || 'new orleans';
+    console.log(city)
+    let url = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&APPID=${data["apiKey"]}`;
+
+    request (url, function(err, response, body){
+        if(err){
+            res.render('city', {weather: null, error: "Error, please try again"});
+            console.log('Error: ', err);
+        } else {
+            let weather = JSON.parse(body);
+            console.log("here")
+            console.log(weather);
+            if(weather == undefined){
+                res.render('city', {weather: null, error: "Error, please try again"});
+                console.log('Error: weather is undefined');
+            } else if (weather.cod == '401'){
+                res.render('city', {weather: null, error: "Error, please try again"});
+                console.log('Error: invalide API key');
+            } else {
+                
+                res.render('city', create_output(weather));
+            }
+        }
+    });
+});
+
+
+app.post('/zip_forecast', function(req, res){
+    
+    let zip = req.body.zip || 70119;
+    console.log(zip)
+    let url = `http://api.openweathermap.org/data/2.5/forecast?zip=${zip}&units=imperial&APPID=${data["apiKey"]}`;
+
+    request (url, function(err, response, body){
+        if(err){
+            res.render('zip', {weather: null, error: "Error, please try again"});
+            console.log('Error: ', err);
+        } else {
+            let weather = JSON.parse(body);
+            console.log("here")
+            console.log(weather);
+            if(weather == undefined){
+                res.render('zip', {weather: null, error: "Error, please try again"});
+                console.log('Error: weather is undefined');
+            } else if (weather.cod == '401'){
+                res.render('zip', {weather: null, error: "Error, please try again"});
+                console.log('Error: invalide API key');
+            } else {
+                
+                res.render('zip', create_output(weather));
+            }
+        }
+    });
+});
+
+
+
+
 
 var getCurrentTime = function(){
     console.log("getting time");
